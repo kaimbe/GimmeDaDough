@@ -1,10 +1,12 @@
 package com.kaimbe.gimmedadough.atm.physical;
 
+import org.joda.money.Money;
+
 import com.kaimbe.gimmedadough.atm.ATM;
 
-public class ControlPanel {
+public class ManagementPanel {
 
-	public ControlPanel(ATM atm) {
+	public ManagementPanel(ATM atm) {
 		// TODO Auto-generated constructor stub
 	}
 

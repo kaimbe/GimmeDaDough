@@ -2,14 +2,17 @@ package com.kaimbe.gimmedadough.atm;
 
 import java.net.InetAddress;
 
+import org.joda.money.Money;
+
+import com.kaimbe.gimmedadough.atm.io.*;
 import com.kaimbe.gimmedadough.atm.physical.*;
-import com.kaimbe.gimmedadough.io.*;
 
 public class ATM implements Runnable{
 	private int id;
 	private int branch;
 	private int institution;
 	private InetAddress bankAddress;
+	private ATMController controller;
 	
 	private Log log;
 	private CardReader cardReader;
@@ -17,7 +20,7 @@ public class ATM implements Runnable{
 	private CustomerConsole customerConsole;
 	private EnvelopeReceiver envelopeReceiver;
 	private BankNetworkManager bankNetworkManager;
-	private ControlPanel controlPanel;
+	private ManagementPanel managementPanel;
 	private ReceiptPrinter receiptPrinter;
 	
     private int state;
@@ -28,21 +31,23 @@ public class ATM implements Runnable{
     private static final int IDLE_STATE = 1;
     private static final int SERVING_CUSTOMER_STATE = 2;
     
-	public ATM(int id, int branch, int institution, InetAddress bankAddress) {
+	public ATM(int id, int branch, int institution, InetAddress bankAddress, ATMController controller) {
 		this.id = id;
 		this.branch = branch;
 		this.institution = institution;
 		this.bankAddress = bankAddress;
+		this.controller = controller;
 		
 		// Create objects corresponding to component parts
 
         log = new Log();
+        bankNetworkManager = new BankNetworkManager(log, bankAddress);
+        
         cardReader = new CardReader(this);
         cashDispenser = new CashDispenser(log);
         customerConsole = new CustomerConsole();
         envelopeReceiver = new EnvelopeReceiver(log);
-        bankNetworkManager = new BankNetworkManager(log, bankAddress);
-        controlPanel = new ControlPanel(this);
+        managementPanel = new ManagementPanel(this);
         receiptPrinter = new ReceiptPrinter();  
     
         // Set up initial conditions when ATM first created
@@ -144,13 +149,104 @@ public class ATM implements Runnable{
         notify();
     }
 
-	private void performShutdown() {
-		Money initialCash = controlPanel.getInitialCash();
+	private void performStartup() {
+		Money initialCash = managementPanel.getInitialCash();
         cashDispenser.setInitialCash(initialCash);
-        bankNetworkManager.openConnection();     
+        bankNetworkManager.openConnection();    
+	}
+	
+	private void performShutdown() {
+		bankNetworkManager.closeConnection();
 	}
 
-	private void performStartup() {
-		bankNetworkManager.closeConnection();
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @return the branch
+	 */
+	public int getBranch() {
+		return branch;
+	}
+
+	/**
+	 * @return the institution
+	 */
+	public int getInstitution() {
+		return institution;
+	}
+
+	/**
+	 * @return the controller
+	 */
+	public ATMController getController() {
+		return controller;
+	}
+
+	/**
+	 * @return the log
+	 */
+	public Log getLog() {
+		return log;
+	}
+
+	/**
+	 * @return the cardReader
+	 */
+	public CardReader getCardReader() {
+		return cardReader;
+	}
+
+	/**
+	 * @return the cashDispenser
+	 */
+	public CashDispenser getCashDispenser() {
+		return cashDispenser;
+	}
+
+	/**
+	 * @return the customerConsole
+	 */
+	public CustomerConsole getCustomerConsole() {
+		return customerConsole;
+	}
+
+	/**
+	 * @return the envelopeReceiver
+	 */
+	public EnvelopeReceiver getEnvelopeReceiver() {
+		return envelopeReceiver;
+	}
+
+	/**
+	 * @return the bankNetworkManager
+	 */
+	public BankNetworkManager getBankNetworkManager() {
+		return bankNetworkManager;
+	}
+
+	/**
+	 * @return the bankAddress
+	 */
+	public InetAddress getBankAddress() {
+		return bankAddress;
+	}
+
+	/**
+	 * @return the controlPanel
+	 */
+	public ManagementPanel getControlPanel() {
+		return managementPanel;
+	}
+
+	/**
+	 * @return the receiptPrinter
+	 */
+	public ReceiptPrinter getReceiptPrinter() {
+		return receiptPrinter;
 	}
 }

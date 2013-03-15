@@ -1,6 +1,8 @@
 package com.kaimbe.gimmedadough.atm.physical;
 
-import com.kaimbe.gimmedadough.io.Log;
+import org.joda.money.Money;
+
+import com.kaimbe.gimmedadough.atm.io.Log;
 
 public class CashDispenser {
 

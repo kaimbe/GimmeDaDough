@@ -1,4 +1,4 @@
-package com.kaimbe.gimmedadough.io;
+package com.kaimbe.gimmedadough.atm.io;
 
 import java.net.InetAddress;
 
