@@ -3,6 +3,7 @@ package com.kaimbe.gimmedadough.atm.io;
 import java.net.InetAddress;
 import java.util.logging.Logger;
 
+import com.kaimbe.gimmedadough.atm.ATMController;
 import com.kaimbe.gimmedadough.banking.Balances;
 import com.kaimbe.gimmedadough.banking.Message;
 import com.kaimbe.gimmedadough.banking.Status;
@@ -14,7 +15,7 @@ public class BankNetworkManager {
     *  @param log the log in which to record sending of messages and responses
     *  @param bankAddress the network address of the bank
     */
-   public BankNetworkManager(Logger log, InetAddress bankAddress)
+   public BankNetworkManager(Logger log, InetAddress bankAddress, ATMController controller)
    {
        this.log = log;
        this.bankAddress = bankAddress;
@@ -43,6 +44,7 @@ public class BankNetworkManager {
     */
    public Status sendMessage(Message message, Balances balances)
    {
+	   log.info("send message to bank");
 	return null;
        // Log sending of the message
        

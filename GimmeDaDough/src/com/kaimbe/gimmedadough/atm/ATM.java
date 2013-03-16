@@ -42,9 +42,11 @@ public class ATM implements Runnable{
 		this.bankAddress = bankAddress;
 		this.controller = controller;
 		
-		Handler handler = null;
+		// Create the ATM Logger
 		try {
-			handler = new FileHandler("test.log");
+			Handler handler = new FileHandler("test.log");
+			log = Logger.getLogger("ATM Logging");
+			log.addHandler(handler);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -52,19 +54,18 @@ public class ATM implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		log = Logger.getLogger("ATM Logging");
-		log.addHandler(handler);
+		
 		
 		// Create objects corresponding to component parts
 
-        bankNetworkManager = new BankNetworkManager(log, bankAddress);
+        bankNetworkManager = new BankNetworkManager(log, bankAddress, controller);
         
-        cardReader = new CardReader(this);
-        cashDispenser = new CashDispenser(log);
-        customerConsole = new CustomerConsole();
-        envelopeReceiver = new EnvelopeReceiver(log);
-        managementPanel = new ManagementPanel(this);
-        receiptPrinter = new ReceiptPrinter();  
+        cardReader = new CardReader(this, controller);
+        cashDispenser = new CashDispenser(log, controller);
+        customerConsole = new CustomerConsole(controller);
+        envelopeReceiver = new EnvelopeReceiver(log, controller);
+        managementPanel = new ManagementPanel(this, controller);
+        receiptPrinter = new ReceiptPrinter(controller);  
     
         // Set up initial conditions when ATM first created
         

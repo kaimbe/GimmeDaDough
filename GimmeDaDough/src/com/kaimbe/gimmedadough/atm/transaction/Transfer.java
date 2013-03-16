@@ -2,6 +2,14 @@ package com.kaimbe.gimmedadough.atm.transaction;
 
 import org.joda.money.Money;
 
+import com.kaimbe.gimmedadough.atm.ATM;
+import com.kaimbe.gimmedadough.atm.Session;
+import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.banking.AccountInformation;
+import com.kaimbe.gimmedadough.banking.Card;
+import com.kaimbe.gimmedadough.banking.Message;
+import com.kaimbe.gimmedadough.banking.Receipt;
+
 public class Transfer extends Transaction{
 	/** Constructor
     *

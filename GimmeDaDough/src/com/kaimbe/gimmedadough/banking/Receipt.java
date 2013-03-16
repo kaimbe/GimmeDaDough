@@ -1,5 +1,11 @@
 package com.kaimbe.gimmedadough.banking;
 
+import java.util.Date;
+import java.util.Enumeration;
+
+import com.kaimbe.gimmedadough.atm.ATM;
+import com.kaimbe.gimmedadough.atm.transaction.Transaction;
+
 public abstract class Receipt {
 	/** Constructor.  This base class constructor will create the portions of the
      *  receipt that are common to all types of transaction, and the subclass
@@ -13,12 +19,14 @@ public abstract class Receipt {
      
     protected Receipt(ATM atm, Card card, Transaction transaction, Balances balances)
     {
+    	Integer institution = (Integer) atm.getInstitution();
+    	Integer branch = (Integer) atm.getBranch();
         // Heading portion of the receipt
         
         headingPortion = new String[4];
         headingPortion[0] = new Date().toString();
-        headingPortion[1] = atm.getBankName();
-        headingPortion[2] = "ATM #" + atm.getID() + " " + atm.getPlace();
+        headingPortion[1] = institution.toString();
+        headingPortion[2] = "ATM #" + atm.getId() + " " + branch.toString();
         headingPortion[3] = "CARD " + card.getNumber() + 
                      " TRANS #" + transaction.getSerialNumber();
 

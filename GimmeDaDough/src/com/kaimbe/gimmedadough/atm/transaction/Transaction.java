@@ -7,6 +7,7 @@ import com.kaimbe.gimmedadough.banking.Balances;
 import com.kaimbe.gimmedadough.banking.Card;
 import com.kaimbe.gimmedadough.banking.Message;
 import com.kaimbe.gimmedadough.banking.Receipt;
+import com.kaimbe.gimmedadough.banking.Status;
 
 public abstract class Transaction {
 	/** Constructor
@@ -108,7 +109,7 @@ public abstract class Transaction {
                    
                case SENDING_TO_BANK_STATE:
                                
-                   status = atm.getNetworkToBank().sendMessage(message, balances);
+                   status = atm.getBankNetworkManager().sendMessage(message, balances);
                
                    if (status.isInvalidPIN())
                        state = INVALID_PIN_STATE;
@@ -214,7 +215,7 @@ public abstract class Transaction {
            atm.getCustomerConsole().display("");
            
            message.setPIN(pin);
-           status = atm.getNetworkToBank().sendMessage(message, balances);
+           status = atm.getBankNetworkManager().sendMessage(message, balances);
            if (! status.isInvalidPIN())
            {
                session.setPIN(pin);

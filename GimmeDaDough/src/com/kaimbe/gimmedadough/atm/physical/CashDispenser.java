@@ -4,17 +4,19 @@ import java.util.logging.Logger;
 
 import org.joda.money.Money;
 
+import com.kaimbe.gimmedadough.atm.ATMController;
+
 public class CashDispenser {
 
 	 /** Constructor
     *
     *  @param log the log in which to record dispensing cash
     */
-   public CashDispenser(Logger log)
+   public CashDispenser(Logger log, ATMController controller)
    {
        this.log = log;
-       
-       //cashOnHand = new Money(0);
+       this.controller = controller;
+       cashOnHand = Money.parse("CAD 0");
    }
    
    /** Set the amount of cash initially on hand 
@@ -33,8 +35,7 @@ public class CashDispenser {
     */
    public boolean checkCashOnHand(Money amount)
    {
-	return false;
-       //return amount.lessEqual(cashOnHand);
+       return (amount.isLessThan(cashOnHand) || amount.isEqual(cashOnHand));
    }
    
    /** Dispense cash to a customer
@@ -45,13 +46,13 @@ public class CashDispenser {
     */
    public void dispenseCash(Money amount)
    {
-       //cashOnHand.subtract(amount);
+       cashOnHand.minus(amount);
        
-       //Simulation.getInstance().dispenseCash(amount);
+	   controller.getMediator().dispenseCash(amount);
        
        // Log cash having been dispensed
        
-       //log.logCashDispensed(amount);
+       log.info(amount.toString() + " dispensed");
    }
 
    /** Log into which cash amounts dispensed will be recorded
@@ -61,5 +62,7 @@ public class CashDispenser {
    /** Current cash on hand
     */
    private Money cashOnHand;
+   
+   private ATMController controller;
 
 }

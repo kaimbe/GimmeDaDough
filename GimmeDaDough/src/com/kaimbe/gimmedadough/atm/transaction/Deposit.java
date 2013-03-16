@@ -2,6 +2,15 @@ package com.kaimbe.gimmedadough.atm.transaction;
 
 import org.joda.money.Money;
 
+import com.kaimbe.gimmedadough.atm.ATM;
+import com.kaimbe.gimmedadough.atm.Session;
+import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.banking.AccountInformation;
+import com.kaimbe.gimmedadough.banking.Card;
+import com.kaimbe.gimmedadough.banking.Message;
+import com.kaimbe.gimmedadough.banking.Receipt;
+import com.kaimbe.gimmedadough.banking.Status;
+
 public class Deposit extends Transaction{
 	/** Constructor
     *
@@ -40,8 +49,8 @@ public class Deposit extends Transaction{
     */
    protected Receipt completeTransaction() throws CustomerConsole.Cancelled
    {
-       atm.getEnvelopeAcceptor().acceptEnvelope();
-       Status status = atm.getNetworkToBank().sendMessage(
+       atm.getEnvelopeReceiver().acceptEnvelope();
+       Status status = atm.getBankNetworkManager().sendMessage(
            new Message(Message.COMPLETE_DEPOSIT,
                        card, pin, serialNumber, -1, to, amount), 
            balances);

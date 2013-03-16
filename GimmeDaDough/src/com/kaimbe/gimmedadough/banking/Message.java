@@ -1,5 +1,7 @@
 package com.kaimbe.gimmedadough.banking;
 
+import org.joda.money.Money;
+
 public class Message {
 	/** Constructor
     *
@@ -74,7 +76,7 @@ public class Message {
            result += " TO  " + toAccount;
        else
            result += " NO TO";
-       if (! amount.lessEqual(new Money(0)))
+       if (! (amount.isLessThan(Money.parse("CAD 0")) || amount.isEqual(Money.parse("CAD 0"))))
            result += " " + amount;
        else
            result += " NO AMOUNT";

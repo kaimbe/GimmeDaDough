@@ -1,5 +1,7 @@
 package com.kaimbe.gimmedadough.banking;
 
+import org.joda.money.Money;
+
 public class Balances {
 	/** Constructor.  Create an object whose values will be filled in later, when
      *  returning a value to the creator.

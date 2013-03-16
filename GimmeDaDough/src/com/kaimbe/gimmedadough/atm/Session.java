@@ -1,5 +1,7 @@
 package com.kaimbe.gimmedadough.atm;
 
+import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.atm.transaction.Transaction;
 import com.kaimbe.gimmedadough.banking.Card;
 
 public class Session {

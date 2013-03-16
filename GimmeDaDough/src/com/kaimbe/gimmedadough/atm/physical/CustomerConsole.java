@@ -2,12 +2,15 @@ package com.kaimbe.gimmedadough.atm.physical;
 
 import org.joda.money.Money;
 
+import com.kaimbe.gimmedadough.atm.ATMController;
+
 public class CustomerConsole {
 
 	/** Constructor
      */
-    public CustomerConsole()
+    public CustomerConsole(ATMController controller)
     {
+    	this.controller = controller;
     }
     
     /** Display a message to the customer
@@ -16,8 +19,8 @@ public class CustomerConsole {
      */
     public void display(String message)
     {
-        //Simulation.getInstance().clearDisplay();
-        //Simulation.getInstance().display(message);
+        controller.getMediator().clearDisplay();
+        controller.getMediator().display(message);
     }
     
     /** Read a PIN entered by the customer (echoed as asterisks)
@@ -28,21 +31,19 @@ public class CustomerConsole {
      */
     public int readPIN(String prompt) throws Cancelled
     {
-		return 0;
-    	/*
-        Simulation.getInstance().clearDisplay();
-        Simulation.getInstance().display(prompt);
-        Simulation.getInstance().display("");
+    	controller.getMediator().clearDisplay();
+    	controller.getMediator().display(prompt);
+    	controller.getMediator().display("");
         
-        String input = Simulation.getInstance().readInput(Simulation.PIN_MODE, 0);
+        String input = controller.getMediator().readInput(/*Simulation.PIN_MODE*/ 0, 0);
         
-        Simulation.getInstance().clearDisplay();
+        controller.getMediator().clearDisplay();
         
         if (input == null)
-            //throw new Cancelled();
+            throw new Cancelled();
         else
             return Integer.parseInt(input);
-        */
+        
     }
     
     /** Display a menu of options and return choice made by customer
@@ -58,23 +59,21 @@ public class CustomerConsole {
      */
     public synchronized int readMenuChoice(String prompt, String[] menu) throws Cancelled
     {
-		return 0;
-    	/*
-        Simulation.getInstance().clearDisplay();
-        Simulation.getInstance().display(prompt);
+    	controller.getMediator().clearDisplay();
+    	controller.getMediator().display(prompt);
         for (int i = 0; i < menu.length; i ++)
-            Simulation.getInstance().display((i+1) + ") " + menu[i]);
+        	controller.getMediator().display((i+1) + ") " + menu[i]);
 
         String input = 
-            Simulation.getInstance().readInput(Simulation.MENU_MODE, menu.length);
+        		controller.getMediator().readInput(/*Simulation.MENU_MODE*/ 0, menu.length);
             
-        Simulation.getInstance().clearDisplay();
+        controller.getMediator().clearDisplay();
         
         if (input == null)
             throw new Cancelled();
         else
             return Integer.parseInt(input) - 1;
-            */
+            
     }
     
     /** Read a money amount entered by the customer
@@ -85,25 +84,22 @@ public class CustomerConsole {
      */
     public synchronized Money readAmount(String prompt) throws Cancelled
     {
-		return null;
-    	/*
-        Simulation.getInstance().clearDisplay();
-        Simulation.getInstance().display(prompt);
-        Simulation.getInstance().display("");
+    	controller.getMediator().clearDisplay();
+    	controller.getMediator().display(prompt);
+    	controller.getMediator().display("");
         
-        String input = Simulation.getInstance().readInput(Simulation.AMOUNT_MODE, 0);
+        String input = controller.getMediator().readInput(/*Simulation.AMOUNT_MODE*/ 0, 0);
         
-        Simulation.getInstance().clearDisplay();
+        controller.getMediator().clearDisplay();
         
         if (input == null)
             throw new Cancelled();
         else
         {
-            int dollars = Integer.parseInt(input) / 100;
-            int cents = Integer.parseInt(input) % 100;
-            return new Money(dollars, cents);
+        	// TODO: Generalize currency
+            return Money.parse("CAD " + input);
         }
-        */
+        
     }
     
     /** Exception thrown when the user presses the cancel key while the ATM is
@@ -118,5 +114,7 @@ public class CustomerConsole {
             super("Cancelled by customer");
         }
     }
+    
+    private ATMController controller;
 
 }

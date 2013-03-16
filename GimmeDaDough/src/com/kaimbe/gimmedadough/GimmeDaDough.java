@@ -17,6 +17,7 @@ public class GimmeDaDough {
 		
 		ATMController controller = new ATMController(proxy, mediator);
 		
+		// TODO: Simplify this constructor
 		ATM xerxes = new ATM(01, 00001, 001, null, controller);
 		
 		new Thread(xerxes).start();

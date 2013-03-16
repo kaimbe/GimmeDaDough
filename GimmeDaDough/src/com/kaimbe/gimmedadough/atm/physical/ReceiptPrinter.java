@@ -2,13 +2,15 @@ package com.kaimbe.gimmedadough.atm.physical;
 
 import java.util.Enumeration;
 
+import com.kaimbe.gimmedadough.atm.ATMController;
 import com.kaimbe.gimmedadough.banking.Receipt;
 
 public class ReceiptPrinter {
 	/** Constructor
      */
-    public ReceiptPrinter()
+    public ReceiptPrinter(ATMController controller)
     { 
+    	this.controller = controller;
     }
     
     /** Print a receipt
@@ -17,14 +19,16 @@ public class ReceiptPrinter {
      */
     public void printReceipt(Receipt receipt)
     {
-        //Enumeration receiptLines = receipt.getLines();
+        Enumeration receiptLines = receipt.getLines();
         
         // Animate the printing of the receipt
 
-        //while (receiptLines.hasMoreElements())
+        while (receiptLines.hasMoreElements())
         {
-            //Simulation.getInstance().printReceiptLine(
-               // ((String) receiptLines.nextElement()));
+            controller.getMediator().printReceiptLine(
+                ((String) receiptLines.nextElement()));
         }
     }
+    
+    private ATMController controller;
 }

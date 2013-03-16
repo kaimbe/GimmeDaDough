@@ -2,15 +2,18 @@ package com.kaimbe.gimmedadough.atm.physical;
 
 import java.util.logging.Logger;
 
+import com.kaimbe.gimmedadough.atm.ATMController;
+
 public class EnvelopeReceiver {
 
 	/** Constructor
     *
     *  @param log the log in which to record receiving an envelope
     */
-   public EnvelopeReceiver(Logger log)
+   public EnvelopeReceiver(Logger log, ATMController controller)
    {
        this.log = log;
+       this.controller = controller;
    }
    
    /** Accept an envelope from customer.
@@ -20,17 +23,16 @@ public class EnvelopeReceiver {
     */
    public void acceptEnvelope() throws CustomerConsole.Cancelled
    {
-	   /*
-       boolean inserted = Simulation.getInstance().acceptEnvelope();
+       boolean inserted = controller.getMediator().acceptEnvelope();
        if (inserted)
-           log.logEnvelopeAccepted();
+           log.info("Envelope inserted");
        else
            throw new CustomerConsole.Cancelled();
-           */
    }
    
    /** Log in which to record receiving an envelope
     */
    private Logger log;
-
+   
+   private ATMController controller;
 }

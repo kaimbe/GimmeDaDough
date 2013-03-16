@@ -1,5 +1,15 @@
 package com.kaimbe.gimmedadough.atm.transaction;
 
+import org.joda.money.Money;
+
+import com.kaimbe.gimmedadough.atm.ATM;
+import com.kaimbe.gimmedadough.atm.Session;
+import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.banking.AccountInformation;
+import com.kaimbe.gimmedadough.banking.Card;
+import com.kaimbe.gimmedadough.banking.Message;
+import com.kaimbe.gimmedadough.banking.Receipt;
+
 public class Withdrawal extends Transaction{
 	/** Constructor
     *
@@ -26,8 +36,8 @@ public class Withdrawal extends Transaction{
 
        String [] amountOptions = { "$20", "$40", "$60", "$100", "$200" };
        Money [] amountValues = { 
-                                 new Money(20), new Money(40), new Money(60),
-                                 new Money(100), new Money(200)
+                                 Money.parse("CAD 20"), Money.parse("CAD 40"), Money.parse("CAD 60"),
+                                 Money.parse("CAD 80"), Money.parse("CAD 100")
                                };
                                  
        String amountMessage = "";
