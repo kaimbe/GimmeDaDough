@@ -1,6 +1,10 @@
 package com.kaimbe.gimmedadough.atm;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
 
 import org.joda.money.Money;
 
@@ -14,7 +18,7 @@ public class ATM implements Runnable{
 	private InetAddress bankAddress;
 	private ATMController controller;
 	
-	private Log log;
+	private Logger log;
 	private CardReader cardReader;
 	private CashDispenser cashDispenser;
 	private CustomerConsole customerConsole;
@@ -38,9 +42,21 @@ public class ATM implements Runnable{
 		this.bankAddress = bankAddress;
 		this.controller = controller;
 		
+		Handler handler = null;
+		try {
+			handler = new FileHandler("test.log");
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		log = Logger.getLogger("ATM Logging");
+		log.addHandler(handler);
+		
 		// Create objects corresponding to component parts
 
-        log = new Log();
         bankNetworkManager = new BankNetworkManager(log, bankAddress);
         
         cardReader = new CardReader(this);
@@ -55,6 +71,8 @@ public class ATM implements Runnable{
         state = OFF_STATE;
         switchOn = false;
         cardInserted = false;  
+        
+        log.info("ATM Created");
 	}
 
 	@Override
@@ -190,7 +208,7 @@ public class ATM implements Runnable{
 	/**
 	 * @return the log
 	 */
-	public Log getLog() {
+	public Logger getLog() {
 		return log;
 	}
 
