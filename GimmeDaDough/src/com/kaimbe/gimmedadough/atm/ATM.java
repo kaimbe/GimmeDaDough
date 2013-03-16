@@ -44,9 +44,10 @@ public class ATM implements Runnable{
 		
 		// Create the ATM Logger
 		try {
-			Handler handler = new FileHandler("test.log");
+			Handler ATMHandler = new FileHandler("ATM_Log.log");
 			log = Logger.getLogger("ATM Logging");
-			log.addHandler(handler);
+			log.addHandler(ATMHandler);
+			log.setUseParentHandlers(false);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
