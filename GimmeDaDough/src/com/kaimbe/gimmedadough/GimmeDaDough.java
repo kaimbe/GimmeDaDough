@@ -4,7 +4,8 @@ import com.kaimbe.gimmedadough.atm.ATM;
 import com.kaimbe.gimmedadough.atm.ATMController;
 import com.kaimbe.gimmedadough.atm.ATMInfo;
 import com.kaimbe.gimmedadough.atm.physical.ATMProxy;
-import com.kaimbe.gimmedadough.cli.CLIMediator;
+import com.kaimbe.gimmedadough.gui.ATMGui;
+import com.kaimbe.gimmedadough.gui.GUIMediator;
 
 public class GimmeDaDough {
 
@@ -15,13 +16,16 @@ public class GimmeDaDough {
 		// Info about the ATM to be created
 		ATMInfo atmInfo = new ATMInfo("01", "00001", "001");
 		
-		// In this case, a command line interface is used. Other implementations may be used here. i.e. GUI, or interface with physical hardware
 		ATMProxy proxy = new ATMProxy();
-		CLIMediator mediator = new CLIMediator();
+		GUIMediator mediator = new GUIMediator();
 		
 		ATMController controller = new ATMController(proxy, mediator);
 		
 		ATM xerxes = new ATM(atmInfo, controller, null);
+		
+		ATMGui gui = new ATMGui(xerxes);
+		
+		mediator.setATM(xerxes);
 		
 		new Thread(xerxes).start();
 	}

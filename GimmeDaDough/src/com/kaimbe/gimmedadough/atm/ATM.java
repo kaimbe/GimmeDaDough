@@ -82,21 +82,28 @@ public class ATM implements Runnable{
             switch(state)
             {
                 case OFF_STATE:
-                
-                    customerConsole.display("Not currently available");
-
+                	
+                	customerConsole.display("Not currently available");
+                	
                     synchronized(this)
                     {
+                    	
                         try
                         { 
+                        	customerConsole.display("wait begin");
+                        	
                             wait();
+                            
+                            customerConsole.display("wait end");
                         }
                         catch(InterruptedException e)
                         { }
                     }
                     
+                    
                     if (switchOn)
                     {
+                    	
                         performStartup();
                         state = IDLE_STATE;
                     }
@@ -116,7 +123,8 @@ public class ATM implements Runnable{
                         }
                         catch(InterruptedException e)
                         { }
-                    }       
+                    }
+                           
                     
                     if (cardInserted)
                     {
@@ -149,8 +157,10 @@ public class ATM implements Runnable{
 	
     public synchronized void switchOn()
     {
+    	customerConsole.display("switchOn begin");
         switchOn = true;
         notify();
+        customerConsole.display("switchOn end");
     }
    
     public synchronized void switchOff()
@@ -166,6 +176,7 @@ public class ATM implements Runnable{
     }
 
 	private void performStartup() {
+		
 		Money initialCash = managementPanel.getInitialCash();
         cashDispenser.setInitialCash(initialCash);
         bankNetworkManager.openConnection();    

@@ -1,16 +1,13 @@
-package com.kaimbe.gimmedadough.cli;
+package com.kaimbe.gimmedadough.gui;
 
 import org.joda.money.Money;
 
+import com.kaimbe.gimmedadough.atm.ATM;
 import com.kaimbe.gimmedadough.banking.Card;
 import com.kaimbe.gimmedadough.mediation.Mediator;
 
-
-public class CLIMediator implements Mediator{
-	public CLIMediator() {
-		
-	}
-	
+public class GUIMediator implements Mediator{
+	private ATM atm;
 	@Override
 	public Money getInitialCash() {
 		// TODO Auto-generated method stub
@@ -70,4 +67,10 @@ public class CLIMediator implements Mediator{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setATM(ATM atm) {
+		this.atm = atm;
+		
+	}
+
 }
