@@ -1,16 +1,16 @@
-package com.kaimbe.gimmedadough.mediation;
+package com.kaimbe.gimmedadough.cli;
 
 import org.joda.money.Money;
 
 import com.kaimbe.gimmedadough.banking.Card;
+import com.kaimbe.gimmedadough.mediation.Mediator;
 
 
 public class CLIMediator implements Mediator{
-	@Override
-	public void test() {
-		System.out.println("CLI Mediator");
+	public CLIMediator() {
+		
 	}
-
+	
 	@Override
 	public Money getInitialCash() {
 		// TODO Auto-generated method stub

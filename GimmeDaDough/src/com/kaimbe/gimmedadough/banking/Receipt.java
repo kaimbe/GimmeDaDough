@@ -19,14 +19,12 @@ public abstract class Receipt {
      
     protected Receipt(ATM atm, Card card, Transaction transaction, Balances balances)
     {
-    	Integer institution = (Integer) atm.getInstitution();
-    	Integer branch = (Integer) atm.getBranch();
         // Heading portion of the receipt
         
         headingPortion = new String[4];
         headingPortion[0] = new Date().toString();
-        headingPortion[1] = institution.toString();
-        headingPortion[2] = "ATM #" + atm.getId() + " " + branch.toString();
+        headingPortion[1] = atm.getATMInfo().getInstitution();
+        headingPortion[2] = "ATM #" + atm.getATMInfo().getId() + " " + atm.getATMInfo().getBranch();
         headingPortion[3] = "CARD " + card.getNumber() + 
                      " TRANS #" + transaction.getSerialNumber();
 

@@ -5,8 +5,6 @@ import org.joda.money.Money;
 import com.kaimbe.gimmedadough.banking.Card;
 
 public interface Mediator {
-	public void test();
-
 	public Money getInitialCash();
 
 	public Card readCard();

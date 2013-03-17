@@ -12,9 +12,7 @@ import com.kaimbe.gimmedadough.atm.io.*;
 import com.kaimbe.gimmedadough.atm.physical.*;
 
 public class ATM implements Runnable{
-	private int id;
-	private int branch;
-	private int institution;
+	private ATMInfo atmInfo;
 	private InetAddress bankAddress;
 	private ATMController controller;
 	
@@ -35,12 +33,10 @@ public class ATM implements Runnable{
     private static final int IDLE_STATE = 1;
     private static final int SERVING_CUSTOMER_STATE = 2;
     
-	public ATM(int id, int branch, int institution, InetAddress bankAddress, ATMController controller) {
-		this.id = id;
-		this.branch = branch;
-		this.institution = institution;
-		this.bankAddress = bankAddress;
+	public ATM(ATMInfo atmInfo, ATMController controller, InetAddress bankAddress) {
+		this.atmInfo = atmInfo;
 		this.controller = controller;
+		this.bankAddress = bankAddress;
 		
 		// Create the ATM Logger
 		try {
@@ -179,25 +175,8 @@ public class ATM implements Runnable{
 		bankNetworkManager.closeConnection();
 	}
 
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * @return the branch
-	 */
-	public int getBranch() {
-		return branch;
-	}
-
-	/**
-	 * @return the institution
-	 */
-	public int getInstitution() {
-		return institution;
+	public ATMInfo getATMInfo() {
+		return atmInfo;
 	}
 
 	/**
