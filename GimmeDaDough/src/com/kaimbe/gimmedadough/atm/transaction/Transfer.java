@@ -2,13 +2,14 @@ package com.kaimbe.gimmedadough.atm.transaction;
 
 import org.joda.money.Money;
 
-import com.kaimbe.gimmedadough.atm.ATM;
 import com.kaimbe.gimmedadough.atm.Session;
-import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.atm.physical.ATMPanel;
+import com.kaimbe.gimmedadough.atm.physical.Cancelled;
 import com.kaimbe.gimmedadough.banking.AccountInformation;
 import com.kaimbe.gimmedadough.banking.Card;
 import com.kaimbe.gimmedadough.banking.Message;
 import com.kaimbe.gimmedadough.banking.Receipt;
+
 
 public class Transfer extends Transaction{
 	/** Constructor
@@ -18,27 +19,27 @@ public class Transfer extends Transaction{
     *  @param card the customer's card
     *  @param pin the PIN entered by the customer
     */
-   public Transfer(ATM atm, Session session, Card card, int pin)
+   public Transfer(Session session, Card card, int pin)
    {
-       super(atm, session, card, pin);
+       super(session, card, pin);
    }
    
    /** Get specifics for the transaction from the customer
     *
     *  @return message to bank for initiating this transaction
-    *  @exception CustomerConsole.Cancelled if customer cancelled this transaction
+    *  @exception GUIDisplay.Cancelled if customer cancelled this transaction
     */
-   protected Message getSpecificsFromCustomer() throws CustomerConsole.Cancelled
+   protected Message getSpecificsFromCustomer() throws Cancelled
    {
-       from = atm.getCustomerConsole().readMenuChoice(
+       from = ATMPanel.getInstance().getConsole().readMenuChoice(
            "Account to transfer from",
            AccountInformation.ACCOUNT_NAMES);
 
-       to = atm.getCustomerConsole().readMenuChoice(
+       to = ATMPanel.getInstance().getConsole().readMenuChoice(
            "Account to transfer to",
            AccountInformation.ACCOUNT_NAMES);
 
-       amount = atm.getCustomerConsole().readAmount("Amount to transfer");
+       amount = ATMPanel.getInstance().getConsole().readAmount("Amount to transfer");
        
        return new Message(Message.TRANSFER, 
                        card, pin, serialNumber, from, to, amount);

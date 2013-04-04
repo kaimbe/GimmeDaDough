@@ -23,8 +23,8 @@ public abstract class Receipt {
         
         headingPortion = new String[4];
         headingPortion[0] = new Date().toString();
-        headingPortion[1] = atm.getATMInfo().getInstitution();
-        headingPortion[2] = "ATM #" + atm.getATMInfo().getId() + " " + atm.getATMInfo().getBranch();
+        headingPortion[1] = atm.getAtmInfo().getInstitution();
+        headingPortion[2] = "ATM #" + atm.getAtmInfo().getId() + " " + atm.getAtmInfo().getBranch();
         headingPortion[3] = "CARD " + card.getNumber() + 
                      " TRANS #" + transaction.getSerialNumber();
 
@@ -42,9 +42,9 @@ public abstract class Receipt {
      *  of the enumeration gets one line (as a String)
      */
      
-    public Enumeration getLines()
+    public Enumeration<?> getLines()
     {
-        return new Enumeration() {
+        return new Enumeration<Object>() {
         
             // The current portion of the receipt being printed
             

@@ -2,12 +2,32 @@ package com.kaimbe.gimmedadough.gui;
 
 import org.joda.money.Money;
 
-import com.kaimbe.gimmedadough.atm.ATM;
+import com.kaimbe.gimmedadough.atm.Mediator;
 import com.kaimbe.gimmedadough.banking.Card;
-import com.kaimbe.gimmedadough.mediation.Mediator;
 
-public class GUIMediator implements Mediator{
-	private ATM atm;
+public class GUIMediator implements Mediator {
+
+	private static GUIMediator instance = new GUIMediator();
+	//private MainFrame frame; //TODO: import netbeans gui
+
+	private GUIMediator() {
+		// Singleton design pattern
+	}
+	
+	public static synchronized GUIMediator getInstance() {
+		return instance;
+	}
+	/*
+	public void setFrame(final MainFrame frame) {
+		this.frame = frame;
+	}
+	*/
+
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException("Clone is not allowed.");
+	}
+
 	@Override
 	public Money getInitialCash() {
 		// TODO Auto-generated method stub
@@ -23,19 +43,19 @@ public class GUIMediator implements Mediator{
 	@Override
 	public void ejectCard() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void retainCard() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispenseCash(Money amount) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -65,12 +85,6 @@ public class GUIMediator implements Mediator{
 	@Override
 	public void printReceiptLine(String string) {
 		// TODO Auto-generated method stub
-		
-	}
 
-	public void setATM(ATM atm) {
-		this.atm = atm;
-		
 	}
-
 }

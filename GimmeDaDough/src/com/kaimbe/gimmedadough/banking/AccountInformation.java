@@ -1,5 +1,6 @@
 package com.kaimbe.gimmedadough.banking;
 
+// TODO: change to enum
 public class AccountInformation {
 	/** Names for accounts to be offered in menu to customer
      */

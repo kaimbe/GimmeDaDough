@@ -1,28 +1,40 @@
 package com.kaimbe.gimmedadough.atm;
 
-import com.kaimbe.gimmedadough.mediation.Mediator;
-import com.kaimbe.gimmedadough.mediation.Proxy;
 
 public class ATMController {
-	private Proxy proxy;
-	private Mediator mediator;
+	private static ATMController instance = new ATMController();
+	private ATM atm;
 	
-	public ATMController(Proxy proxy, Mediator mediator) {
-		this.proxy = proxy;
-		this.mediator = mediator;
+	private ATMController() {
+		// Singleton design pattern
 	}
 	
-	/**
-	 * @return the mediator
-	 */
-	public Mediator getMediator() {
-		return mediator;
+	public static synchronized ATMController getInstance() {
+		return instance;
+	}
+	
+
+	public void setATM(final ATM atm) {
+		this.atm = atm;
+	}
+	
+	
+	protected Object clone() throws CloneNotSupportedException {
+		throw new CloneNotSupportedException("Clone is not allowed.");
 	}
 
-	/**
-	 * @return the proxy
-	 */
-	public Proxy getProxy() {
-		return proxy;
+	
+	public void switchOn() {
+		atm.switchOn();
+	}
+
+	
+	public void switchOff() {
+		atm.switchOff();
+	}
+
+	
+	public void cardInserted() {
+		atm.cardInserted();
 	}
 }

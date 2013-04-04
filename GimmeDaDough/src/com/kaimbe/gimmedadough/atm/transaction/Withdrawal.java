@@ -2,9 +2,9 @@ package com.kaimbe.gimmedadough.atm.transaction;
 
 import org.joda.money.Money;
 
-import com.kaimbe.gimmedadough.atm.ATM;
 import com.kaimbe.gimmedadough.atm.Session;
-import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.atm.physical.ATMPanel;
+import com.kaimbe.gimmedadough.atm.physical.Cancelled;
 import com.kaimbe.gimmedadough.banking.AccountInformation;
 import com.kaimbe.gimmedadough.banking.Card;
 import com.kaimbe.gimmedadough.banking.Message;
@@ -18,19 +18,19 @@ public class Withdrawal extends Transaction{
     *  @param card the customer's card
     *  @param pin the PIN entered by the customer
     */
-   public Withdrawal(ATM atm, Session session, Card card, int pin)
+   public Withdrawal(Session session, Card card, int pin)
    {
-       super(atm, session, card, pin);
+       super(session, card, pin);
    }
    
    /** Get specifics for the transaction from the customer
     *
     *  @return message to bank for initiating this transaction
-    *  @exception CustomerConsole.Cancelled if customer cancelled this transaction
+    *  @exception Cancelled if customer cancelled this transaction
     */
-   protected Message getSpecificsFromCustomer() throws CustomerConsole.Cancelled
+   protected Message getSpecificsFromCustomer() throws Cancelled
    {
-       from = atm.getCustomerConsole().readMenuChoice(
+       from = ATMPanel.getInstance().getConsole().readMenuChoice(
            "Account to withdraw from",
            AccountInformation.ACCOUNT_NAMES);
 
@@ -46,10 +46,10 @@ public class Withdrawal extends Transaction{
        while (! validAmount)
        {
            amount = amountValues [ 
-               atm.getCustomerConsole().readMenuChoice(
+               ATMPanel.getInstance().getConsole().readMenuChoice(
                    amountMessage + "Amount of cash to withdraw", amountOptions) ];
                            
-           validAmount = atm.getCashDispenser().checkCashOnHand(amount);
+           validAmount = ATMPanel.getInstance().getCashDispenser().checkCashOnHand(amount);
 
            if (! validAmount)
                amountMessage = "Insufficient cash available\n";
@@ -66,7 +66,7 @@ public class Withdrawal extends Transaction{
     */
    protected Receipt completeTransaction()
    {
-       atm.getCashDispenser().dispenseCash(amount);
+	   ATMPanel.getInstance().getCashDispenser().dispenseCash(amount);
        return new Receipt(this.atm, this.card, this, this.balances) {
            {
                detailsPortion = new String[2];

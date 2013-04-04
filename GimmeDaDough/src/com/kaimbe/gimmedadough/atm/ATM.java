@@ -1,262 +1,144 @@
 package com.kaimbe.gimmedadough.atm;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
 import org.joda.money.Money;
 
-import com.kaimbe.gimmedadough.atm.io.*;
 import com.kaimbe.gimmedadough.atm.physical.*;
 
-public class ATM implements Runnable{
+public class ATM implements Runnable {
 	private ATMInfo atmInfo;
-	private InetAddress bankAddress;
-	private ATMController controller;
-	
 	private Logger log;
-	private CardReader cardReader;
-	private CashDispenser cashDispenser;
-	private CustomerConsole customerConsole;
-	private EnvelopeReceiver envelopeReceiver;
-	private BankNetworkManager bankNetworkManager;
-	private ManagementPanel managementPanel;
-	private ReceiptPrinter receiptPrinter;
 	
-    private int state;
-    private boolean switchOn;
-    private boolean cardInserted; 
+	private int state;
+	private boolean switchOn;
+	private boolean cardInserted;
 
-    private static final int OFF_STATE = 0;
-    private static final int IDLE_STATE = 1;
-    private static final int SERVING_CUSTOMER_STATE = 2;
-    
-	public ATM(ATMInfo atmInfo, ATMController controller, InetAddress bankAddress) {
+	private static final int OFF_STATE = 0;
+	private static final int IDLE_STATE = 1;
+	private static final int SERVING_CUSTOMER_STATE = 2;
+
+	public ATM(ATMInfo atmInfo) {
 		this.atmInfo = atmInfo;
-		this.controller = controller;
-		this.bankAddress = bankAddress;
 		
 		// Create the ATM Logger
 		try {
-			Handler ATMHandler = new FileHandler("ATM_Log.log");
+			Handler ATMHandler = new FileHandler("logs/" + atmInfo.getId()
+					+ "_ATM_Log.log");
 			log = Logger.getLogger("ATM Logging");
 			log.addHandler(ATMHandler);
 			log.setUseParentHandlers(false);
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Problem with the logger");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Problem with the logger");
 		}
-		
-		
-		// Create objects corresponding to component parts
 
-        bankNetworkManager = new BankNetworkManager(log, bankAddress, controller);
-        
-        cardReader = new CardReader(this, controller);
-        cashDispenser = new CashDispenser(log, controller);
-        customerConsole = new CustomerConsole(controller);
-        envelopeReceiver = new EnvelopeReceiver(log, controller);
-        managementPanel = new ManagementPanel(this, controller);
-        receiptPrinter = new ReceiptPrinter(controller);  
-    
-        // Set up initial conditions when ATM first created
-        
-        state = OFF_STATE;
-        switchOn = false;
-        cardInserted = false;  
-        
-        log.info("ATM Created");
+		// Set up initial conditions when ATM first created
+		state = OFF_STATE;
+		switchOn = false;
+		cardInserted = false;
+
+		log.info("ATM Created");
 	}
 
 	@Override
 	public void run() {
 		Session currentSession = null;
-        
-        while (true)
-        {
-            switch(state)
-            {
-                case OFF_STATE:
-                	
-                	customerConsole.display("Not currently available");
-                	
-                    synchronized(this)
-                    {
-                    	
-                        try
-                        { 
-                        	customerConsole.display("wait begin");
-                        	
-                            wait();
-                            
-                            customerConsole.display("wait end");
-                        }
-                        catch(InterruptedException e)
-                        { }
-                    }
-                    
-                    
-                    if (switchOn)
-                    {
-                    	
-                        performStartup();
-                        state = IDLE_STATE;
-                    }
-                                            
-                    break;
-                    
-                case IDLE_STATE:
-                
-                    customerConsole.display("Please insert your card");
-                    cardInserted = false;
-                                        
-                    synchronized(this)
-                    {
-                        try
-                        { 
-                            wait();
-                        }
-                        catch(InterruptedException e)
-                        { }
-                    }
-                           
-                    
-                    if (cardInserted)
-                    {
-                        currentSession = new Session(this);
-                        state = SERVING_CUSTOMER_STATE;
-                    }
-                    else if (! switchOn)
-                    {
-                        performShutdown();
-                        state = OFF_STATE;
-                    }
-                    
-                    break;
-            
-                case SERVING_CUSTOMER_STATE:
-                                    
-                    // The following will not return until the session has
-                    // completed
-                    
-                    currentSession.performSession();
-                    
-                    state = IDLE_STATE;
-                    
-                    break;
-                
-            }
-        }
-		
+
+		while (true) {
+			switch (state) {
+			case OFF_STATE:
+
+				ATMPanel.getInstance().getConsole().display("Not currently available");
+
+				synchronized (this) {
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						log.severe(e.getMessage());
+					}
+				}
+
+				if (switchOn) {
+					performStartup();
+					state = IDLE_STATE;
+				}
+
+				break;
+
+			case IDLE_STATE:
+
+				ATMPanel.getInstance().getConsole().display("Please insert your card");
+				cardInserted = false;
+
+				synchronized (this) {
+					try {
+						wait();
+					} catch (InterruptedException e) {
+						log.severe(e.getMessage());
+					}
+				}
+
+				if (cardInserted) {
+					currentSession = new Session();
+					state = SERVING_CUSTOMER_STATE;
+				} else if (!switchOn) {
+					performShutdown();
+					state = OFF_STATE;
+				}
+
+				break;
+
+			case SERVING_CUSTOMER_STATE:
+
+				currentSession.performSession();
+				state = IDLE_STATE;
+
+				break;
+			}
+		}
 	}
-	
-    public synchronized void switchOn()
-    {
-    	customerConsole.display("switchOn begin");
-        switchOn = true;
-        notify();
-        customerConsole.display("switchOn end");
-    }
-   
-    public synchronized void switchOff()
-    {
-        switchOn = false;
-        notify();
-    }
-   
-    public synchronized void cardInserted()
-    {
-        cardInserted = true;
-        notify();
-    }
+
+	public synchronized void switchOn() {
+		switchOn = true;
+		notify();
+	}
+
+	public synchronized void switchOff() {
+		switchOn = false;
+		notify();
+	}
+
+	public synchronized void cardInserted() {
+		cardInserted = true;
+		notify();
+	}
 
 	private void performStartup() {
-		
-		Money initialCash = managementPanel.getInitialCash();
-        cashDispenser.setInitialCash(initialCash);
-        bankNetworkManager.openConnection();    
-	}
-	
-	private void performShutdown() {
-		bankNetworkManager.closeConnection();
+		Money initialCash = ATMPanel.getInstance().getMaintenancePanel().getInitialCash();
+		ATMPanel.getInstance().getCashDispenser().setInitialCash(initialCash);
+		ATMPanel.getInstance().getBankNetworkManager().openConnection();
 	}
 
-	public ATMInfo getATMInfo() {
+	private void performShutdown() {
+		ATMPanel.getInstance().getBankNetworkManager().closeConnection();
+	}
+
+	/**
+	 * @return the atmInfo
+	 */
+	public ATMInfo getAtmInfo() {
 		return atmInfo;
 	}
 
 	/**
-	 * @return the controller
+	 * @param atmInfo the atmInfo to set
 	 */
-	public ATMController getController() {
-		return controller;
-	}
-
-	/**
-	 * @return the log
-	 */
-	public Logger getLog() {
-		return log;
-	}
-
-	/**
-	 * @return the cardReader
-	 */
-	public CardReader getCardReader() {
-		return cardReader;
-	}
-
-	/**
-	 * @return the cashDispenser
-	 */
-	public CashDispenser getCashDispenser() {
-		return cashDispenser;
-	}
-
-	/**
-	 * @return the customerConsole
-	 */
-	public CustomerConsole getCustomerConsole() {
-		return customerConsole;
-	}
-
-	/**
-	 * @return the envelopeReceiver
-	 */
-	public EnvelopeReceiver getEnvelopeReceiver() {
-		return envelopeReceiver;
-	}
-
-	/**
-	 * @return the bankNetworkManager
-	 */
-	public BankNetworkManager getBankNetworkManager() {
-		return bankNetworkManager;
-	}
-
-	/**
-	 * @return the bankAddress
-	 */
-	public InetAddress getBankAddress() {
-		return bankAddress;
-	}
-
-	/**
-	 * @return the controlPanel
-	 */
-	public ManagementPanel getControlPanel() {
-		return managementPanel;
-	}
-
-	/**
-	 * @return the receiptPrinter
-	 */
-	public ReceiptPrinter getReceiptPrinter() {
-		return receiptPrinter;
+	public void setAtmInfo(ATMInfo atmInfo) {
+		this.atmInfo = atmInfo;
 	}
 }

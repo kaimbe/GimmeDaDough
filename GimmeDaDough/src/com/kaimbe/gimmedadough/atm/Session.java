@@ -1,12 +1,11 @@
 package com.kaimbe.gimmedadough.atm;
 
-import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.atm.physical.ATMPanel;
+import com.kaimbe.gimmedadough.atm.physical.Cancelled;
 import com.kaimbe.gimmedadough.atm.transaction.Transaction;
 import com.kaimbe.gimmedadough.banking.Card;
 
 public class Session {
-	
-	private ATM atm;
 	private int pin;
 	private int state;
 	
@@ -22,10 +21,8 @@ public class Session {
     *
     *  @param atm the ATM on which the session is performed
     */
-   public Session(ATM atm)
+   public Session()
    {
-       this.atm = atm;
-       
        state = READING_CARD_STATE;
    }
 
@@ -42,14 +39,13 @@ public class Session {
            {
                case READING_CARD_STATE:
                
-               
-                   card = atm.getCardReader().readCard();
+                   card = ATMPanel.getInstance().getCardReader().readCard();
                    
                    if (card != null)
                        state = READING_PIN_STATE;
                    else
                    {
-                       atm.getCustomerConsole().display("Unable to read card");
+                       ATMPanel.getInstance().getConsole().display("Unable to read card");
                        state = EJECTING_CARD_STATE;
                    }
                    break;
@@ -58,12 +54,12 @@ public class Session {
                
                    try
                    {
-                       pin = atm.getCustomerConsole().readPIN(
+                       pin = ATMPanel.getInstance().getConsole().readPIN(
                            "Please enter your PIN\n" +
                            "Then press ENTER");
                        state = CHOOSING_TRANSACTION_STATE;
                    }
-                   catch(CustomerConsole.Cancelled e)
+                   catch(Cancelled e)
                    {
                        state = EJECTING_CARD_STATE;
                    }
@@ -74,10 +70,10 @@ public class Session {
                    try
                    {
                        currentTransaction = 
-                           Transaction.makeTransaction(atm, this, card, pin);
+                           Transaction.makeTransaction(this, card, pin);
                        state = PERFORMING_TRANSACTION_STATE;
                    }
-                   catch(CustomerConsole.Cancelled e)
+                   catch(Cancelled e)
                    {
                        state = EJECTING_CARD_STATE;
                    }
@@ -102,7 +98,7 @@ public class Session {
                    
                case EJECTING_CARD_STATE:
                
-                   atm.getCardReader().ejectCard();
+            	   ATMPanel.getInstance().getCardReader().ejectCard();
                    state = FINAL_STATE;
                    break;
            }
@@ -118,6 +114,4 @@ public class Session {
    {
        this.pin = pin;
    }
-
-	
 }

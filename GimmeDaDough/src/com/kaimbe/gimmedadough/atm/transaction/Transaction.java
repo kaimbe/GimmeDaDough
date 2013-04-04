@@ -2,12 +2,14 @@ package com.kaimbe.gimmedadough.atm.transaction;
 
 import com.kaimbe.gimmedadough.atm.ATM;
 import com.kaimbe.gimmedadough.atm.Session;
-import com.kaimbe.gimmedadough.atm.physical.CustomerConsole;
+import com.kaimbe.gimmedadough.atm.physical.ATMPanel;
+import com.kaimbe.gimmedadough.atm.physical.Cancelled;
 import com.kaimbe.gimmedadough.banking.Balances;
 import com.kaimbe.gimmedadough.banking.Card;
 import com.kaimbe.gimmedadough.banking.Message;
 import com.kaimbe.gimmedadough.banking.Receipt;
 import com.kaimbe.gimmedadough.banking.Status;
+
 
 public abstract class Transaction {
 	/** Constructor
@@ -18,9 +20,8 @@ public abstract class Transaction {
     *  @param pin the PIN entered by the customer
     */
     
-   protected Transaction(ATM atm, Session session, Card card, int pin)
+   protected Transaction(Session session, Card card, int pin)
    {
-       this.atm = atm;
        this.session = session;
        this.card = card;
        this.pin = pin;
@@ -39,33 +40,33 @@ public abstract class Transaction {
     *  @param card the customer's card
     *  @param pin the PIN entered by the customer
     *  @return a newly created Transaction object of the appropriate type
-    *  @exception CustomerConsole.Cancelled if the customer presses cancel instead
+    *  @exception GUIDisplay.Cancelled if the customer presses cancel instead
     *         of choosing a transaction type
     */
-   public static Transaction makeTransaction(ATM atm, Session session,
+   public static Transaction makeTransaction(Session session,
                                              Card card, int pin)
-                               throws CustomerConsole.Cancelled              
+                               throws Cancelled              
    {
-       int choice = atm.getCustomerConsole().readMenuChoice(
+       int choice = ATMPanel.getInstance().getConsole().readMenuChoice(
                "Please choose transaction type", TRANSACTION_TYPES_MENU);
                
        switch(choice)
        {
            case 0:
            
-               return new Withdrawal(atm, session, card, pin);
+               return new Withdrawal(session, card, pin);
                
            case 1:
            
-               return new Deposit(atm, session, card, pin);
+               return new Deposit(session, card, pin);
                
            case 2:
            
-               return new Transfer(atm, session, card, pin);
+               return new Transfer(session, card, pin);
                
            case 3:
            
-               return new Inquiry(atm, session, card, pin);
+               return new Inquiry(session, card, pin);
                
            default:
            
@@ -96,10 +97,10 @@ public abstract class Transaction {
                    try
                    {           
                        message = getSpecificsFromCustomer();
-                       atm.getCustomerConsole().display("");
+                       ATMPanel.getInstance().getConsole().display("");
                        state = SENDING_TO_BANK_STATE;
                    }
-                   catch(CustomerConsole.Cancelled e)
+                   catch(Cancelled e)
                    {
                        doAnotherMessage = "Last transaction was cancelled";
                        state = ASKING_DO_ANOTHER_STATE;
@@ -109,7 +110,7 @@ public abstract class Transaction {
                    
                case SENDING_TO_BANK_STATE:
                                
-                   status = atm.getBankNetworkManager().sendMessage(message, balances);
+                   status = ATMPanel.getInstance().getBankNetworkManager().sendMessage(message, balances);
                
                    if (status.isInvalidPIN())
                        state = INVALID_PIN_STATE;
@@ -141,7 +142,7 @@ public abstract class Transaction {
                            state = ASKING_DO_ANOTHER_STATE;
                        }
                    }
-                   catch(CustomerConsole.Cancelled e)
+                   catch(Cancelled e)
                    {
                        doAnotherMessage = "Last transaction was cancelled";
                        state = ASKING_DO_ANOTHER_STATE;
@@ -156,7 +157,7 @@ public abstract class Transaction {
                        receipt = completeTransaction();
                        state = PRINTING_RECEIPT_STATE;
                    }
-                   catch(CustomerConsole.Cancelled e)
+                   catch(Cancelled e)
                    {
                        doAnotherMessage = "Last transaction was cancelled";
                        state = ASKING_DO_ANOTHER_STATE;
@@ -166,7 +167,7 @@ public abstract class Transaction {
                    
                case PRINTING_RECEIPT_STATE:
                
-                   atm.getReceiptPrinter().printReceipt(receipt);
+            	   ATMPanel.getInstance().getReceiptPrinter().printReceipt(receipt);
                    state = ASKING_DO_ANOTHER_STATE;
                    
                    break;
@@ -180,13 +181,13 @@ public abstract class Transaction {
                    {
                        String [] yesNoMenu = { "Yes", "No" };
 
-                       boolean doAgain = atm.getCustomerConsole().readMenuChoice(
+                       boolean doAgain = ATMPanel.getInstance().getConsole().readMenuChoice(
                            doAnotherMessage + 
                            "Would you like to do another transaction?",
                            yesNoMenu) == 0;
                        return doAgain;
                    }
-                   catch(CustomerConsole.Cancelled e)
+                   catch(Cancelled e)
                    {
                        return false;
                    }
@@ -199,23 +200,23 @@ public abstract class Transaction {
     *
     *  @return status code returned by bank from most recent re-submission
     *          of transaction
-    *  @exception CustomerConsole.Cancelled if customer presses the CANCEL key
+    *  @exception GUIDisplay.Cancelled if customer presses the CANCEL key
     *             instead of re-entering PIN
     *  @exception CardRetained if card was retained due to too many invalid PIN's
     */
-   public Status performInvalidPINExtension() throws CustomerConsole.Cancelled,
+   public Status performInvalidPINExtension() throws Cancelled,
                                                      CardRetained
    {
        Status status = null;
        for (int i = 0; i < 3; i ++)
        {
-           pin = atm.getCustomerConsole().readPIN(
+           pin = ATMPanel.getInstance().getConsole().readPIN(
                "PIN was incorrect\nPlease re-enter your PIN\n" +
                "Then press ENTER");
-           atm.getCustomerConsole().display("");
+           ATMPanel.getInstance().getConsole().display("");
            
            message.setPIN(pin);
-           status = atm.getBankNetworkManager().sendMessage(message, balances);
+           status = ATMPanel.getInstance().getBankNetworkManager().sendMessage(message, balances);
            if (! status.isInvalidPIN())
            {
                session.setPIN(pin);
@@ -223,8 +224,8 @@ public abstract class Transaction {
            }
        }
        
-       atm.getCardReader().retainCard();
-       atm.getCustomerConsole().display(
+       ATMPanel.getInstance().getCardReader().retainCard();
+       ATMPanel.getInstance().getConsole().display(
            "Your card has been retained\nPlease contact the bank.");
        try
        {
@@ -232,7 +233,7 @@ public abstract class Transaction {
        }
        catch(InterruptedException e)
        { }
-       atm.getCustomerConsole().display("");
+       ATMPanel.getInstance().getConsole().display("");
                
        throw new CardRetained();
    }
@@ -251,17 +252,17 @@ public abstract class Transaction {
     *  subclass must implement this appropriately.
     *
     *  @return message to bank for initiating this transaction
-    *  @exception CustomerConsole.Cancelled if customer cancelled this transaction
+    *  @exception GUIDisplay.Cancelled if customer cancelled this transaction
     */
-   protected abstract Message getSpecificsFromCustomer() throws CustomerConsole.Cancelled;
+   protected abstract Message getSpecificsFromCustomer() throws Cancelled;
    
    /** Complete an approved transaction  - each subclass must implement
     *  this appropriately.
     *
     *  @return receipt to be printed for this transaction
-    *  @exception CustomerConsole.Cancelled if customer cancelled this transaction
+    *  @exception GUIDisplay.Cancelled if customer cancelled this transaction
     */
-   protected abstract Receipt completeTransaction() throws CustomerConsole.Cancelled;
+   protected abstract Receipt completeTransaction() throws Cancelled;
    
    
    // Local class representing card retained exception
