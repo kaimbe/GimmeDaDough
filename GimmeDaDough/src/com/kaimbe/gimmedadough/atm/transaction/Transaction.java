@@ -40,7 +40,7 @@ public abstract class Transaction {
     *  @param card the customer's card
     *  @param pin the PIN entered by the customer
     *  @return a newly created Transaction object of the appropriate type
-    *  @exception GUIDisplay.Cancelled if the customer presses cancel instead
+    *  @exception GUIConsole.Cancelled if the customer presses cancel instead
     *         of choosing a transaction type
     */
    public static Transaction makeTransaction(Session session,
@@ -200,7 +200,7 @@ public abstract class Transaction {
     *
     *  @return status code returned by bank from most recent re-submission
     *          of transaction
-    *  @exception GUIDisplay.Cancelled if customer presses the CANCEL key
+    *  @exception GUIConsole.Cancelled if customer presses the CANCEL key
     *             instead of re-entering PIN
     *  @exception CardRetained if card was retained due to too many invalid PIN's
     */
@@ -252,7 +252,7 @@ public abstract class Transaction {
     *  subclass must implement this appropriately.
     *
     *  @return message to bank for initiating this transaction
-    *  @exception GUIDisplay.Cancelled if customer cancelled this transaction
+    *  @exception GUIConsole.Cancelled if customer cancelled this transaction
     */
    protected abstract Message getSpecificsFromCustomer() throws Cancelled;
    
@@ -260,7 +260,7 @@ public abstract class Transaction {
     *  this appropriately.
     *
     *  @return receipt to be printed for this transaction
-    *  @exception GUIDisplay.Cancelled if customer cancelled this transaction
+    *  @exception GUIConsole.Cancelled if customer cancelled this transaction
     */
    protected abstract Receipt completeTransaction() throws Cancelled;
    

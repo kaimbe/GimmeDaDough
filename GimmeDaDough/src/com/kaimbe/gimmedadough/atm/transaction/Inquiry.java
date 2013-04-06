@@ -27,7 +27,7 @@ public class Inquiry extends Transaction{
    /** Get specifics for the transaction from the customer
     *
     *  @return message to bank for initiating this transaction
-    *  @exception GUIDisplay.Cancelled if customer cancelled this transaction
+    *  @exception GUIConsole.Cancelled if customer cancelled this transaction
     */
    protected Message getSpecificsFromCustomer() throws Cancelled
    {

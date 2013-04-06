@@ -18,6 +18,7 @@ public class GUIBankNetworkManager implements BankNetworkManager{
    public GUIBankNetworkManager(InetAddress bankAddress)
    {
        this.bankAddress = bankAddress;
+       log.info("bank network manager created");
    }
    
    /** Open connection to bank at system startup

@@ -1,11 +1,15 @@
 package com.kaimbe.gimmedadough.gui.physical;
 
+import java.util.logging.Logger;
+
 import org.joda.money.Money;
 
 import com.kaimbe.gimmedadough.atm.physical.MaintenancePanel;
 import com.kaimbe.gimmedadough.gui.GUIMediator;
 
 public class GUIMaintenancePanel implements MaintenancePanel{
+	
+	private Logger log = Logger.getLogger("ATM Logging");
 
 	/** Constructor
     *
@@ -13,7 +17,7 @@ public class GUIMaintenancePanel implements MaintenancePanel{
     */
    public GUIMaintenancePanel()
    {
-       
+       log.info("maintenance panel created");
    }
    
    // In a real ATM, code would be needed to sense a change in the state of the

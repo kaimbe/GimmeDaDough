@@ -21,7 +21,7 @@ public class GimmeDaDough {
 		ATMPanel.getInstance().setBankNetworkManager(new GUIBankNetworkManager(bankAddress));
 		ATMPanel.getInstance().setCardReader(new GUICardReader());
 		ATMPanel.getInstance().setCashDispenser(new GUICashDispenser());
-		ATMPanel.getInstance().setConsole(new GUIDisplay());
+		ATMPanel.getInstance().setConsole(new GUIConsole());
 		ATMPanel.getInstance().setEnvelopeReceiver(new GUIEnvelopeReceiver());
 		ATMPanel.getInstance().setMaintenancePanel(new GUIMaintenancePanel());
 		ATMPanel.getInstance().setReceiptPrinter(new GUIReceiptPrinter());

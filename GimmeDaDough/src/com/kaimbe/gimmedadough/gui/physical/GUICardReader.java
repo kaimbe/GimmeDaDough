@@ -1,17 +1,21 @@
 package com.kaimbe.gimmedadough.gui.physical;
 
+import java.util.logging.Logger;
+
 import com.kaimbe.gimmedadough.atm.physical.CardReader;
 import com.kaimbe.gimmedadough.banking.Card;
 import com.kaimbe.gimmedadough.gui.GUIMediator;
 
 public class GUICardReader implements CardReader{
+	private Logger log = Logger.getLogger("ATM Logging");
+	
 	/** Constructor
     *
     *  
     */
    public GUICardReader()
    {
-       
+       log.info("card reader created");
    }
    
    // In a real ATM, code would be needed to sense insertion of a card into the

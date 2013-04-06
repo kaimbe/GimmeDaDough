@@ -8,6 +8,7 @@ import com.kaimbe.gimmedadough.atm.physical.CashDispenser;
 import com.kaimbe.gimmedadough.gui.GUIMediator;
 
 public class GUICashDispenser implements CashDispenser{
+	
 
 	 /** Constructor
     *
@@ -16,6 +17,7 @@ public class GUICashDispenser implements CashDispenser{
    public GUICashDispenser()
    {
        cashOnHand = Money.parse("CAD 0");
+       log.info("cash dispenser created");
    }
    
    /** Set the amount of cash initially on hand 

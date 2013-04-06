@@ -1,18 +1,21 @@
 package com.kaimbe.gimmedadough.gui.physical;
 
+import java.util.logging.Logger;
+
 import org.joda.money.Money;
 
 import com.kaimbe.gimmedadough.atm.physical.Cancelled;
 import com.kaimbe.gimmedadough.atm.physical.Console;
 import com.kaimbe.gimmedadough.gui.GUIMediator;
 
-public class GUIDisplay implements Console{
+public class GUIConsole implements Console{
+	private Logger log = Logger.getLogger("ATM Logging");
 
 	/** Constructor
      */
-    public GUIDisplay()
+    public GUIConsole()
     {
-    	
+    	log.info("console created");
     }
     
     /** Display a message to the customer

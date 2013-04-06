@@ -19,7 +19,7 @@ public class GUIEnvelopeReceiver implements EnvelopeReceiver{
    
    /** Accept an envelope from customer.
     *
-    *  @exception GUIDisplay.Cancelled if operation timed out or the
+    *  @exception GUIConsole.Cancelled if operation timed out or the
     *             customer cancelled it
     */
    @Override
