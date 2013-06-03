@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<document>
+  <properties>
+    <title>Changes</title>
+    <author>Stephen Colebourne</author>
+  </properties>
+  <body>
+
+    <!-- types are add, fix, remove, update -->
+    <release version="0.8" date="2013-01-30" description="Version 0.8">
+      <action dev="scolebourne" type="update" >
+        Change to requiring JDK 1.6.
+      </action>
+      <action dev="timmolter" type="add">
+        Allow a second currency data file to enhance those in the base file [9,13]
+      </action>              
+    </release>
+    <release version="0.7" date="2013-01-03" description="Version 0.7">
+      <action dev="scolebourne" type="fix">
+        Fix printing of grouped negative numbers [10]
+      </action>              
+      <action dev="scolebourne" type="fix">
+        Change LBP currency to 2dp [7]
+      </action>              
+      <action dev="scolebourne" type="update">
+        Relax checking for decimal places
+      </action>              
+      <action dev="scolebourne" type="fix">
+        Move Estonia to the Euro [2]
+      </action>              
+      <action dev="scolebourne" type="add">
+        Add old Russian currency [1]
+      </action>              
+    </release>
+    <release version="0.6" date="2011-08-01" description="Version 0.6">
+      <action dev="scolebourne" type="add">
+        Major updates and changes.
+      </action>              
+    </release>
+    <release version="0.5" date="2009-11-16" description="Initial version">
+      <action dev="scolebourne" type="add">
+        Initial version.
+      </action>              
+    </release>
+
+  </body>
+</document>

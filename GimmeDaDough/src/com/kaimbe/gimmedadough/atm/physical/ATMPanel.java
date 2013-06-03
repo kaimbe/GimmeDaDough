@@ -2,26 +2,64 @@ package com.kaimbe.gimmedadough.atm.physical;
 
 import com.kaimbe.gimmedadough.atm.io.BankNetworkManager;
 
+/**
+ * 
+ * @author Matthew Newell
+ * 
+ *         represents the main panel of a atm, with all of the components
+ *         associated with the atm. uses singleton design pattern
+ * 
+ * 
+ */
 public class ATMPanel {
-	
+	/**
+	 * the one and only instance
+	 */
 	private static ATMPanel instance = new ATMPanel();
-	
+	/**
+	 * the card reader
+	 */
 	private CardReader cardReader;
+	/**
+	 * the cash dispenser
+	 */
 	private CashDispenser cashDispenser;
+	/**
+	 * the console
+	 */
 	private Console console;
+	/**
+	 * the envelope receiver
+	 */
 	private EnvelopeReceiver envelopeReceiver;
+	/**
+	 * the network manager
+	 */
 	private BankNetworkManager bankNetworkManager;
+	/**
+	 * the maintenance panel
+	 */
 	private MaintenancePanel maintenancePanel;
+	/**
+	 * the receipt printer
+	 */
 	private ReceiptPrinter receiptPrinter;
-	
+
+	/**
+	 * constructor
+	 */
 	private ATMPanel() {
-		
+		// Singleton design pattern
 	}
-	
+
+	/**
+	 * 
+	 * @return the one and only instance
+	 */
 	public static synchronized ATMPanel getInstance() {
 		return instance;
 	}
-	
+
 	/**
 	 * @return the cardReader
 	 */
@@ -30,7 +68,8 @@ public class ATMPanel {
 	}
 
 	/**
-	 * @param cardReader the cardReader to set
+	 * @param cardReader
+	 *            the cardReader to set
 	 */
 	public void setCardReader(CardReader cardReader) {
 		this.cardReader = cardReader;
@@ -44,7 +83,8 @@ public class ATMPanel {
 	}
 
 	/**
-	 * @param cashDispenser the cashDispenser to set
+	 * @param cashDispenser
+	 *            the cashDispenser to set
 	 */
 	public void setCashDispenser(CashDispenser cashDispenser) {
 		this.cashDispenser = cashDispenser;
@@ -58,7 +98,8 @@ public class ATMPanel {
 	}
 
 	/**
-	 * @param display the display to set
+	 * @param display
+	 *            the display to set
 	 */
 	public void setConsole(Console display) {
 		this.console = display;
@@ -72,7 +113,8 @@ public class ATMPanel {
 	}
 
 	/**
-	 * @param envelopeReceiver the envelopeReceiver to set
+	 * @param envelopeReceiver
+	 *            the envelopeReceiver to set
 	 */
 	public void setEnvelopeReceiver(EnvelopeReceiver envelopeReceiver) {
 		this.envelopeReceiver = envelopeReceiver;
@@ -86,7 +128,8 @@ public class ATMPanel {
 	}
 
 	/**
-	 * @param bankNetworkManager the bankNetworkManager to set
+	 * @param bankNetworkManager
+	 *            the bankNetworkManager to set
 	 */
 	public void setBankNetworkManager(BankNetworkManager bankNetworkManager) {
 		this.bankNetworkManager = bankNetworkManager;
@@ -100,7 +143,8 @@ public class ATMPanel {
 	}
 
 	/**
-	 * @param maintenancePanel the maintenancePanel to set
+	 * @param maintenancePanel
+	 *            the maintenancePanel to set
 	 */
 	public void setMaintenancePanel(MaintenancePanel maintenancePanel) {
 		this.maintenancePanel = maintenancePanel;
@@ -114,7 +158,8 @@ public class ATMPanel {
 	}
 
 	/**
-	 * @param receiptPrinter the receiptPrinter to set
+	 * @param receiptPrinter
+	 *            the receiptPrinter to set
 	 */
 	public void setReceiptPrinter(ReceiptPrinter receiptPrinter) {
 		this.receiptPrinter = receiptPrinter;

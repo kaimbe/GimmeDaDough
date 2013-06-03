@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.2" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true">  
+  <class id="1" language="java" name="com.kaimbe.gimmedadough.atm.transaction.Transaction.CardRetained" 
+    project="GimmeDaDough" file="/GimmeDaDough/src/com/kaimbe/gimmedadough/atm/transaction/Transaction.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="99" width="195" x="469" y="580"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="com.kaimbe.gimmedadough.atm.transaction.Transaction" project="GimmeDaDough" 
+    file="/GimmeDaDough/src/com/kaimbe/gimmedadough/atm/transaction/Transaction.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="477" width="255" x="469" y="63"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="com.kaimbe.gimmedadough.atm.transaction.Deposit" project="GimmeDaDough" 
+    file="/GimmeDaDough/src/com/kaimbe/gimmedadough/atm/transaction/Deposit.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="153" width="211" x="53" y="-1"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="com.kaimbe.gimmedadough.atm.transaction.Inquiry" project="GimmeDaDough" 
+    file="/GimmeDaDough/src/com/kaimbe/gimmedadough/atm/transaction/Inquiry.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="135" width="211" x="69" y="244"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="com.kaimbe.gimmedadough.atm.transaction.Transfer" project="GimmeDaDough" 
+    file="/GimmeDaDough/src/com/kaimbe/gimmedadough/atm/transaction/Transfer.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="171" width="211" x="883" y="-4"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="com.kaimbe.gimmedadough.atm.transaction.Withdrawal" project="GimmeDaDough" 
+    file="/GimmeDaDough/src/com/kaimbe/gimmedadough/atm/transaction/Withdrawal.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="153" width="211" x="926" y="319"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" accessors="true" 
+      visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true"/>      
+      <operations public="true" package="true" protected="true" private="true"/>    
+    </display>  
+  </class>  
+  <nesting id="7">    
+    <end type="SOURCE" refId="2"/>    
+    <end type="TARGET" refId="1"/>  
+  </nesting>  
+  <generalization id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="4"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <generalization id="11">    
+    <end type="SOURCE" refId="3"/>    
+    <end type="TARGET" refId="2"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true"/>    
+    <operations public="true" package="true" protected="true" private="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
